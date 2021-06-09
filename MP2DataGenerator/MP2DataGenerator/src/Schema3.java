@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class Schema3 {
@@ -149,36 +151,35 @@ public class Schema3 {
 					System.out.println("insertion was successful");
 			}
 	 }
-
-  @SuppressWarnings("deprecation")
-  public static void populateReserves(Connection conn) {
-    HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
-    
-    for (int i = 1; i <= 15000; i++) {
-      int m = (int) ((Math.random() * (9000 - 1)) + 1);
-      int k = (int) ((Math.random() * (3000 - 1)) + 1);
-      if (map.get(m) == null) {
-        if (insertReserves(m, k,new Date(1,1,1999), conn) == 0) {
-          System.err.println("insertion of record " + i + " failed");
-          break;
-        } else
-          System.out.println("insertion was successful");
-
-      } else {
-        int x = map.get(m);
-        while (x == k) {
-          k = (int) ((Math.random() * (3000 - 1)) + 1);
-        }
-        map.put(m, k);
-        if (insertReserves(m, k,new Date(1,1,1999), conn) == 0) {
-          System.err.println("insertion of record " + i + " failed");
-          break;
-        } else
-          System.out.println("insertion was successful");
-
-      }
-
-    }
+	 @SuppressWarnings("deprecation")
+	public static void populateReserves(Connection conn) {
+     HashMap<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
+	   for (int i = 1; i <= 15000; i++) {
+       int b=(int) ((Math.random() * (3000 - 1)) + 1);
+       int s=(int) ((Math.random() * (9000 - 1)) + 1);
+	     ArrayList<Integer> sb= map.get(s);
+       if(sb!=null){
+         while (sb.contains(b)){
+           b= (int) ((Math.random() * (3000 - 1)) + 1);
+         }
+         map.get(s).add(b);
+         if (insertReserves(s, b,new Date(1,1,1999), conn) == 0) {
+           System.err.println("insertion of record " + i + " failed");
+           break;
+         } else
+           System.out.println("insertion was successful");
+       }
+       else{
+         ArrayList<Integer> li = new ArrayList<>();
+         li.add(b);
+         map.put(s,li);
+         if (insertReserves(s, b,new Date(1,1,1999), conn) == 0) {
+           System.err.println("insertion of record " + i + " failed");
+           break;
+         } else
+           System.out.println("insertion was successful");
+       }
+			}
 	 }
 	 public static void insertSchema3(Connection connection) {
 			populateSailor(connection);
