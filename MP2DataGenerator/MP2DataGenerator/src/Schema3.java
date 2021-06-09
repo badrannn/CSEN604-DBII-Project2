@@ -162,7 +162,7 @@ public class Schema3 {
          while (sb.contains(b)){
            b= (int) ((Math.random() * (3000 - 1)) + 1);
          }
-         map.get(s).add(b);
+         ((ArrayList<Integer>)map.get(s)).add(b);
          if (insertReserves(s, b,new Date(1,1,1999), conn) == 0) {
            System.err.println("insertion of record " + i + " failed");
            break;
