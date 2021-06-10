@@ -158,7 +158,7 @@ public class Schema3 {
        int b=(int) ((Math.random() * (3000 - 1)) + 1);
        int s=(int) ((Math.random() * (9000 - 1)) + 1);
 	     ArrayList<Integer> sb= map.get(s);
-       if(sb!=null){
+       if(map.get(s)!=null){
          while (sb.contains(b)){
            b= (int) ((Math.random() * (3000 - 1)) + 1);
          }
