@@ -143,14 +143,48 @@ public class Schema3 {
 			}
 	 }
 	 public static void populateBoat(Connection conn) {
-		 for (int i = 1; i <= 3000; i++) {
-				if (insertBoat(i, "Boat" + i,"Red", conn) == 0) {
+		 for (int i = 1; i <= 1500; i++) {
+				if (insertBoat(i, "Boat" + i,"red", conn) == 0) {
 					System.err.println("insertion of record " + i + " failed");
 					break;
 				} else
 					System.out.println("insertion was successful");
 			}
+     for (int i = 1501; i <= 3000; i++) {
+       if (insertBoat(i, "Boat" + i,"blue", conn) == 0) {
+         System.err.println("insertion of record " + i + " failed");
+         break;
+       } else
+         System.out.println("insertion was successful");
+     }
 	 }
+  public static int getTwosComplement(String binaryInt) {
+    //Check if the number is negative.
+    //We know it's negative if it starts with a 1
+    if (binaryInt.charAt(0) == '1') {
+      //Call our invert digits method
+      String invertedInt = invertDigits(binaryInt);
+      //Change this to decimal format.
+      int decimalValue = Integer.parseInt(invertedInt, 2);
+      //Add 1 to the curernt decimal and multiply it by -1
+      //because we know it's a negative number
+      decimalValue = (decimalValue + 1) * -1;
+      //return the final result
+      return decimalValue;
+    } else {
+      //Else we know it's a positive number, so just convert
+      //the number to decimal base.
+      return Integer.parseInt(binaryInt, 2);
+    }
+  }
+
+  public static String invertDigits(String binaryInt) {
+    String result = binaryInt;
+    result = result.replace("0", " "); //temp replace 0s
+    result = result.replace("1", "0"); //replace 1s with 0s
+    result = result.replace(" ", "1"); //put the 1s back in
+    return result;
+  }
 	 @SuppressWarnings("deprecation")
 	public static void populateReserves(Connection conn) {
      HashMap<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
@@ -189,46 +223,6 @@ public class Schema3 {
 	 
 	public static void main(String[] argv) {
 
-		System.out.println("-------- PostgreSQL "
-				+ "JDBC Connection Testing ------------");
-
-		try {
-
-			Class.forName("org.postgresql.Driver");
-
-		} catch (ClassNotFoundException e) {
-
-			System.out.println("Where is your PostgreSQL JDBC Driver? "
-					+ "Include in your library path!");
-			e.printStackTrace();
-			return;
-
-		}
-
-		System.out.println("PostgreSQL JDBC Driver Registered!");
-
-		Connection connection = null;
-
-		try {
-
-			connection = DriverManager.getConnection(
-					"jdbc:postgresql://127.0.0.1:5432/schema3", "postgres",
-					"post");
-
-            insertSchema3(connection);
-		
-		} catch (SQLException e) {
-
-			System.out.println("Connection Failed! Check output console");
-			e.printStackTrace();
-			return;
-
-		}
-
-		if (connection != null) {
-			System.out.println("You made it, take control your database now!");
-		} else {
-			System.out.println("Failed to make connection!");
-		}
+    System.out.println(getTwosComplement("001000"));
 	}
 }
